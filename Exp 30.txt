@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <pthread.h>
+
+void* func(void* arg){
+    long id = (long)arg;
+    printf("Thread %ld started\n", id);
+    pthread_exit((void*)id);
+}
+
+int main(){
+    pthread_t t1, t2;
+    pthread_create(&t1,NULL,func,(void*)1);
+    pthread_create(&t2,NULL,func,(void*)2);
+    void *r1, *r2;
+    pthread_join(t1,&r1);
+    pthread_join(t2,&r2);
+    printf("Returned: %ld %ld\n", (long)r1, (long)r2);
+    printf("Are threads equal? %s\n", pthread_equal(t1,t2) ? "Yes" : "No");
+    return 0;
+}

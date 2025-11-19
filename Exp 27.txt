@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <dirent.h>
+#include <sys/stat.h>
+
+int main(){
+    DIR *d = opendir(".");
+    struct dirent *de;
+    struct stat st;
+    if(!d) return 1;
+    while((de = readdir(d)) != NULL){
+        if(stat(de->d_name, &st)==0){
+            printf("%10ld %s\n", st.st_size, de->d_name);
+        } else {
+            printf("          - %s\n", de->d_name);
+        }
+    }
+    closedir(d);
+    return 0;
+}

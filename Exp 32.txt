@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <limits.h>
+
+int findLRU(int time[], int n){
+    int min = time[0], pos = 0;
+    for(int i=1;i<n;i++) if(time[i] < min){ min = time[i]; pos = i; }
+    return pos;
+}
+
+int main(){
+    int frames, n; printf("Frames: "); scanf("%d",&frames);
+    printf("Number of pages: "); scanf("%d",&n);
+    int pages[n]; printf("Pages: ");
+    for(int i=0;i<n;i++) scanf("%d",&pages[i]);
+
+    int frame[frames]; int time[frames];
+    for(int i=0;i<frames;i++){ frame[i]=-1; time[i]=0; }
+    int count=0, faults=0, t=0;
+
+    for(int i=0;i<n;i++){
+        int pg = pages[i], found=0;
+        for(int j=0;j<frames;j++) if(frame[j]==pg){ found=1; time[j]=++t; break; }
+        if(!found){
+            int placed=0;
+            for(int j=0;j<frames;j++) if(frame[j]==-1){ frame[j]=pg; time[j]=++t; faults++; placed=1; break; }
+            if(!placed){
+                int pos = findLRU(time, frames);
+                frame[pos] = pg; time[pos] = ++t; faults++;
+            }
+        }
+        printf("After %d => ", pg);
+        for(int j=0;j<frames;j++) printf("%d ", frame[j]);
+        printf("\n");
+    }
+    printf("Total Page Faults = %d\n", faults);
+    return 0;
+}

@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+    char records[10][50] = {
+        "Rec0","Rec1","Rec2","Rec3","Rec4","Rec5","Rec6","Rec7","Rec8","Rec9"
+    };
+    int req;
+    printf("Enter record number to read (0-9): ");
+    scanf("%d",&req);
+    printf("Reading sequentially:\n");
+    for(int i=0;i<=req;i++){
+        printf("Reading record %d: %s\n", i, records[i]);
+    }
+    return 0;
+}

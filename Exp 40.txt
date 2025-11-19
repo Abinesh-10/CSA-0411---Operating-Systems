@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <sys/stat.h>
+
+int main(){
+    struct stat st;
+    if(stat("prog19", &st) == 0){
+        printf("Mode (octal): %o\n", st.st_mode & 07777);
+        printf("Owner UID: %d, GID: %d\n", st.st_uid, st.st_gid);
+    } else {
+        perror("stat");
+    }
+    printf("Users: owner, group members, others\n");
+    printf("Permission bits: r=4 w=2 x=1 (sum per category)\n");
+    printf("Special bits: setuid, setgid, sticky\n");
+    return 0;
+}

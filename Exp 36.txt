@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main(){
+    // next pointers: -1 means end
+    int next[10] = {1,4,5,-1,2,7,-1,8,9,-1};
+    int start = 0;
+    printf("File blocks sequence: ");
+    int cur = start;
+    while(cur != -1){
+        printf("%d ", cur);
+        cur = next[cur];
+    }
+    printf("\n");
+    return 0;
+}

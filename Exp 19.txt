@@ -1,0 +1,40 @@
+// prog19.c
+#include <stdio.h>
+#include <pthread.h>
+
+#define ITER 100000
+
+int count = 0;
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+
+void* inc(void* arg){
+    int id = *(int*)arg;
+    printf("Thread %d started\n", id);
+    for(int i=0;i<ITER;i++){
+        pthread_mutex_lock(&m);
+        count++;
+        pthread_mutex_unlock(&m);
+    }
+    printf("Thread %d finished\n", id);
+    return NULL;
+}
+
+int main(){
+    pthread_t t1,t2;
+    int id1 = 1, id2 = 2;
+
+    if (pthread_create(&t1, NULL, inc, &id1) != 0){
+        perror("pthread_create t1");
+        return 1;
+    }
+    if (pthread_create(&t2, NULL, inc, &id2) != 0){
+        perror("pthread_create t2");
+        return 1;
+    }
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Final count = %d\n", count);
+    return 0;
+}

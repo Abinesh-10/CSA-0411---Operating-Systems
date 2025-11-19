@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void*a,const void*b){ return (*(int*)a - *(int*)b); }
+
+int main(){
+    int diskSize, head, n;
+    printf("Disk size: "); scanf("%d",&diskSize);
+    printf("Head position: "); scanf("%d",&head);
+    printf("Number of requests: "); scanf("%d",&n);
+    int req[n]; for(int i=0;i<n;i++) scanf("%d",&req[i]);
+    qsort(req,n,sizeof(int),cmp);
+    int total=0;
+    // service >= head
+    for(int i=0;i<n;i++){
+        if(req[i] >= head){ total += abs(head - req[i]); head = req[i]; printf("Serviced %d\n", req[i]); }
+    }
+    // jump to beginning
+    if(head != diskSize-1){
+        total += abs(head - (diskSize-1));
+        head = diskSize-1;
+        total += diskSize-1; // wrap to 0 (simulate jump)
+        head = 0;
+        printf("Jumped to start\n");
+    }
+    for(int i=0;i<n;i++){
+        if(req[i] < 0) continue;
+        if(req[i] < head) continue; // none
+        if(req[i] < (diskSize)) {
+            if(req[i] < head) continue;
+        }
+    }
+    // service requests < original head
+    for(int i=0;i<n;i++){
+        if(req[i] < head) continue;
+    }
+
+    for(int i=0;i<n;i++) if(req[i] < head) { total += abs(head - req[i]); head = req[i]; printf("Serviced %d\n", req[i]); }
+    printf("Total head movement = %d\n", total);
+    return 0;
+}

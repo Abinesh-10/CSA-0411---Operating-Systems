@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <limits.h>
+
+int main(){
+    int m,n; printf("Blocks and Processes: "); scanf("%d %d",&m,&n);
+    int block[m], proc[n], alloc[n];
+    for(int i=0;i<m;i++){ printf("Block %d size: ",i+1); scanf("%d",&block[i]); }
+    for(int i=0;i<n;i++){ printf("Process %d size: ",i+1); scanf("%d",&proc[i]); alloc[i]=-1; }
+
+    for(int i=0;i<n;i++){
+        int idx=-1, min = INT_MAX;
+        for(int j=0;j<m;j++){
+            if(block[j] >= proc[i] && (block[j] - proc[i]) < min){
+                min = block[j] - proc[i]; idx = j;
+            }
+        }
+        if(idx != -1){ alloc[i]=idx; block[idx]-=proc[i]; }
+    }
+    printf("\nAllocation:\n");
+    for(int i=0;i<n;i++)
+        if(alloc[i]!=-1) printf("P%d -> Block %d\n", i+1, alloc[i]+1);
+        else printf("P%d -> Not allocated\n", i+1);
+    return 0;
+}

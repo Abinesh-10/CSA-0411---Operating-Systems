@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <limits.h>
+
+int findFarthest(int frames[], int n, int pages[], int curr, int total){
+    int res = -1, farthest = curr;
+    for(int i=0;i<n;i++){
+        int j;
+        for(j=curr;j<total;j++) if(frames[i] == pages[j]) break;
+        if(j == total) return i; // never used again
+        if(j > farthest){ farthest = j; res = i; }
+    }
+    return (res==-1)?0:res;
+}
+
+int main(){
+    int f, p; printf("Frames: "); scanf("%d",&f);
+    printf("Pages count: "); scanf("%d",&p);
+    int pages[p]; printf("Pages: ");
+    for(int i=0;i<p;i++) scanf("%d",&pages[i]);
+    int frames[f]; for(int i=0;i<f;i++) frames[i]=-1;
+    int faults=0;
+    for(int i=0;i<p;i++){
+        int pg = pages[i], found=0;
+        for(int j=0;j<f;j++) if(frames[j]==pg){ found=1; break; }
+        if(!found){
+            int placed=0;
+            for(int j=0;j<f;j++) if(frames[j]==-1){ frames[j]=pg; faults++; placed=1; break; }
+            if(!placed){
+                int idx = findFarthest(frames,f,pages,i+1,p);
+                frames[idx]=pg; faults++;
+            }
+        }
+        printf("After %d => ", pg);
+        for(int j=0;j<f;j++) printf("%d ", frames[j]);
+        printf("\n");
+    }
+    printf("Total Page Faults = %d\n", faults);
+    return 0;
+}

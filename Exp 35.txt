@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main(){
+    int blocks[10] = {10,11,12,13,14,15,16,17,18,19}; // simulated block numbers
+    int indexBlock[5] = {0,2,4,6,8}; // pointers into blocks[]
+    int req;
+    printf("Enter record index to read (0-4): ");
+    scanf("%d",&req);
+    int blocknum = blocks[indexBlock[req]];
+    printf("Index entry %d -> block %d (data: Record at block %d)\n", req, blocknum, blocknum);
+    return 0;
+}
